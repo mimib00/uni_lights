@@ -200,6 +200,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             onTap: () async {
                               final ImagePicker _picker = ImagePicker();
                               var img = await _picker.pickImage(source: ImageSource.gallery);
+
                               if (img == null) return;
                               showDialog(
                                 context: context,
@@ -214,10 +215,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               );
                               var path = "messages/${user?.uid!}/${DateTime.now().microsecondsSinceEpoch}";
-                              UploadTask uploadTask = _storage.child(path).putFile(File(img.path));
+                              TaskSnapshot uploadTask = await _storage.child(path).putFile(File(img.path));
 
-                              if (uploadTask.snapshot.state == TaskState.success) {
-                                var imageUrl = await uploadTask.snapshot.ref.getDownloadURL();
+                              if (uploadTask.state == TaskState.success) {
+                                var imageUrl = await uploadTask.ref.getDownloadURL();
                                 sendMessage(user, attachment: imageUrl);
                               }
                               Navigator.pop(context);

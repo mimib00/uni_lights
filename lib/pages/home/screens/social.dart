@@ -14,6 +14,7 @@ import 'package:uni_light/models/post.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/my_text.dart';
 import 'package:uni_light/widgets/post_card.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Social extends StatefulWidget {
   const Social({Key? key}) : super(key: key);
@@ -111,6 +112,44 @@ class _SocialState extends State<Social> {
                 ),
               ),
         expandCard == true ? cardExpand() : const SizedBox(),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 20),
+          height: 146,
+          child: GestureDetector(
+            onTap: () {
+              launch("https://www.fatsoma.com/uni-lights");
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      "assets/images/backroom.png",
+                      width: kWidth(context),
+                      height: kHeight(context),
+                      fit: BoxFit.cover,
+                    ),
+                    const Center(
+                      child: Text(
+                        "Uni Lights Single Parties.",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: kPrimaryColor,
+                          fontFamily: 'Roboto Mono',
+                          fontWeight: FontWeight.w500,
+                          backgroundColor: Colors.black54,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         MyText(
           text: 'Community posts',
           size: 14,

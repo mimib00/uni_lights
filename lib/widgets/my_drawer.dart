@@ -101,18 +101,6 @@ class MyDrawer extends StatelessWidget {
                       physics: const BouncingScrollPhysics(),
                       children: [
                         ListTile(
-                          onTap: () {},
-                          leading: Image.asset(
-                            'assets/images/carbon_notification-new.png',
-                            height: 26,
-                          ),
-                          title: MyText(
-                            text: 'Notifications',
-                            size: 20,
-                            color: kDarkGreyColor,
-                          ),
-                        ),
-                        ListTile(
                           onTap: () {
                             Navigator.of(context).pop();
                             Navigator.of(context).push(MaterialPageRoute(
@@ -129,19 +117,6 @@ class MyDrawer extends StatelessWidget {
                             color: kDarkGreyColor,
                           ),
                         ),
-                        // ListTile(
-                        //   onTap: () {},
-                        //   leading: Image.asset(
-                        //     'assets/images/fluent_people-add-16-regular.png',
-                        //     height: 25,
-                        //   ),
-                        //   title: MyText(
-                        //     text: 'Invite a friends',
-                        //     size: 20,
-                        //     weight: FontWeight.w500,
-                        //     color: kDarkGreyColor,
-                        //   ),
-                        // ),
                         ListTile(
                           onTap: () {
                             Navigator.of(context).pop();

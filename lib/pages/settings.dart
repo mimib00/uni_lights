@@ -45,9 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
             weight: FontWeight.w700,
             color: kDarkGreyColor,
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           Container(
             height: 120,
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -351,9 +349,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           Container(
             height: 135,
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -506,9 +502,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
           Container(
             height: 90,
             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -585,171 +579,112 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: kLightGreyColor,
-                width: 1,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyText(
-                  paddingRight: 15.0,
-                  paddingBottom: 15.0,
-                  paddingLeft: 15.0,
-                  text: 'Please enable the functions below for better experience!',
-                  size: 12,
-                  color: kGreyColor,
-                ),
-                Row(
-                  children: const [
-                    Expanded(
-                      child: CustomSwitchTiles(
-                        title: 'Notifications',
-                      ),
-                    ),
-                    Expanded(
-                      child: CustomSwitchTiles(
-                        title: 'Video Call Chat',
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: const [
-                    Expanded(
-                      child: CustomSwitchTiles(
-                        title: 'Voice Call Chat',
-                      ),
-                    ),
-                  ],
-                ),
-                MyText(
-                  paddingTop: 10.0,
-                  paddingLeft: 15.0,
-                  paddingRight: 15.0,
-                  paddingBottom: 15.0,
-                  text: 'Do you want to be discoverable for other users? ',
-                  size: 12,
-                  color: kGreyColor,
-                ),
-                const CustomSwitchTiles(
-                  title: 'Discoverability',
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Image.asset(
-                        'assets/images/fluent_question-circle-24-regular.png',
-                        height: 25,
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyText(
-                            text: 'If you disable this option you will not longer appear in other users searchings.',
-                            size: 12,
-                            paddingRight: 15.0,
-                            paddingLeft: 10.0,
-                            color: kGreyColor,
+          const SizedBox(height: 30),
+          GestureDetector(
+            onTap: () {
+              TextEditingController controller = TextEditingController();
+              TextEditingController password = TextEditingController();
+              TextEditingController _password = TextEditingController();
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Chnage Your Password"),
+                  content: SizedBox(
+                    height: 212,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextField(
+                          controller: controller,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: "Current Password",
                           ),
-                        ],
-                      ),
+                          keyboardType: TextInputType.emailAddress,
+                          obscureText: true,
+                          // textCapitalization: TextCapitalization.words,
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: password,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: "New Password",
+                          ),
+                          keyboardType: TextInputType.text,
+                          obscureText: true,
+                          // textCapitalization: TextCapitalization.words,
+                        ),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: _password,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: "Confirm new Password",
+                          ),
+                          keyboardType: TextInputType.text,
+                          obscureText: true,
+                          // textCapitalization: TextCapitalization.words,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Container(
-            height: 90,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: kLightGreyColor,
-                width: 1,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyText(
-                  text: 'Blocked users',
-                  size: 14,
-                  weight: FontWeight.w500,
-                  color: kDarkGreyColor,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    MyText(
-                      text: 'See the list of blocked users',
-                      size: 12,
-                      color: kGreyColor,
-                    ),
-                    Image.asset(
-                      'assets/images/entypo_block.png',
-                      height: 20,
-                    ),
-                  ],
-                ),
-                MyText(
-                  text: 'Manage the list',
-                  size: 10,
-                  weight: FontWeight.w600,
-                  color: kRedColor,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          RichText(
-            textAlign: TextAlign.start,
-            text: const TextSpan(
-              style: TextStyle(
-                fontSize: 12,
-                color: kGreyColor,
-                fontFamily: 'Poppins',
-              ),
-              children: [
-                TextSpan(
-                  text: 'Do you have any doubts about your password safety? If so, please ',
-                ),
-                TextSpan(
-                  text: 'change your password',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: kRedColor,
                   ),
+                  actions: [
+                    TextButton(
+                      onPressed: () async {
+                        if (controller.text.isEmpty || password.text.isEmpty || _password.text.isEmpty) {
+                          Navigator.of(context).pop();
+                          return;
+                        }
+                        if (password.text != _password.text) {
+                          Navigator.of(context).pop();
+                          return;
+                        }
+
+                        UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: user.email!, password: controller.text.trim());
+
+                        credential.user!.updatePassword(password.text.trim()).then((value) => Navigator.pop(context));
+                      },
+                      child: const Text("Change"),
+                    )
+                  ],
                 ),
-                TextSpan(
-                  text: '!',
+              );
+            },
+            child: RichText(
+              textAlign: TextAlign.start,
+              text: const TextSpan(
+                style: TextStyle(
+                  fontSize: 12,
+                  color: kGreyColor,
+                  fontFamily: 'Poppins',
                 ),
-              ],
+                children: [
+                  TextSpan(
+                    text: 'Do you have any doubts about your password safety? If so, please ',
+                  ),
+                  TextSpan(
+                    text: 'change your password',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: kRedColor,
+                    ),
+                  ),
+                  TextSpan(
+                    text: '!',
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(
-            height: 100,
-          ),
+          const SizedBox(height: 100),
         ],
       ),
     );

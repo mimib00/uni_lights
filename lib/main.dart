@@ -7,7 +7,6 @@ import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_light/config/routes.dart';
 import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/core/data_manager.dart';
@@ -89,14 +88,8 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification? notification = message.notification;
       AndroidNotification? androidNotification = message.notification?.android;
-      SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (notification != null && androidNotification != null) {
-        // var notify = prefs.getStringList("notifications") ?? [];
-        // Map<String, dynamic> data = {
-        //   notification.android.
-        // };
-        // prefs.setStringList("notifications", jsonEncode(data));
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
           notification.title,
