@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -26,7 +24,6 @@ const AndroidNotificationChannel androidNotificationChannel = AndroidNotificatio
 
 Future<void> firebaseMessagingBackgoundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print("A bg message just showed up: ${message.messageId}");
 }
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
