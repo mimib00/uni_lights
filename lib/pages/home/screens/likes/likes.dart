@@ -181,26 +181,6 @@ class LikeTile extends StatefulWidget {
 class _LikeTileState extends State<LikeTile> {
   @override
   Widget build(BuildContext context) {
-    Color bgColor = kGreenColor;
-    switch (widget.status) {
-      case "It's complicated":
-        setState(() {
-          bgColor = kOrangeColor;
-        });
-        break;
-      case "Signle":
-        setState(() {
-          bgColor = kGreenColor;
-        });
-        break;
-      case "In a relationship":
-        setState(() {
-          bgColor = kRedColor;
-        });
-
-        break;
-      default:
-    }
     return Container(
       height: 112,
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -211,7 +191,9 @@ class _LikeTileState extends State<LikeTile> {
             children: [
               ProfileImage(
                 image: widget.studentPic,
-                bgColor: bgColor,
+                status: widget.status,
+                width: 90,
+                height: 90,
               ),
               Expanded(
                 child: SizedBox(

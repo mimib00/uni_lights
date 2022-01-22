@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:uni_light/core/data_manager.dart';
 import 'package:uni_light/models/post.dart';
 import 'package:uni_light/core/authentication.dart';
-import 'package:uni_light/pages/home/screens/social.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/my_text.dart';
+import 'package:uni_light/widgets/profile_image.dart';
 import 'package:uni_light/widgets/uni_bottom_sheet.dart';
 
 class PostCard extends StatefulWidget {
@@ -52,6 +52,9 @@ class _PostCardState extends State<PostCard> {
           children: [
             ProfileImage(
               image: image,
+              width: 55,
+              height: 55,
+              status: user.light!,
             ),
             const SizedBox(width: 8),
             Text(

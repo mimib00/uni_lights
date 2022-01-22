@@ -384,6 +384,7 @@ class _ListingUploadState extends State<ListingUpload> {
                                 "name": user.name,
                                 "photo_url": user.photoURL,
                                 "university": user.university,
+                                "light": user.light!,
                               },
                               "description": description.text,
                               "price": double.parse(price.text.trim()),

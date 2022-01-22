@@ -15,6 +15,7 @@ class Products {
 
   /// Product owner university.
   String? university;
+  String? ownerLight;
 
   /// Product description.
   String? description;
@@ -50,6 +51,7 @@ class Products {
     this.isSold = false,
     this.tags = const [],
     this.createAt,
+    this.ownerLight,
   });
 
   factory Products.fromMap(Map<String, dynamic> data, {String? uid}) => Products(
@@ -65,6 +67,7 @@ class Products {
         isSold: data["is_sold"],
         tags: data["tags"],
         createAt: data["created_at"],
+        ownerLight: data["light"],
       );
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -74,6 +77,7 @@ class Products {
             "name": ownerName,
             "photo_url": ownerPhoto,
             "university": university,
+            "light": ownerLight
           },
           "description": description,
           "price": price,

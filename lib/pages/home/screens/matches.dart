@@ -99,7 +99,6 @@ class _MyMatchesState extends State<MyMatches> {
                                     universityName: snapshot.data?[index].university,
                                     department: snapshot.data?[index].courseName,
                                     year: snapshot.data?[index].year,
-                                    bgColor: kGreenColor,
                                   );
                                 } else {
                                   return Column(
@@ -149,7 +148,6 @@ class _MyMatchesState extends State<MyMatches> {
                                     universityName: snapshot.data?[index].university,
                                     department: snapshot.data?[index].courseName,
                                     year: snapshot.data?[index].year,
-                                    bgColor: kGreenColor,
                                   );
                                 } else {
                                   return Column(

@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/models/user.dart';
 import 'package:uni_light/utils/constants.dart';
-import 'package:uni_light/widgets/custom_switch.dart';
 import 'package:uni_light/widgets/my_app_bar.dart';
 import 'package:uni_light/widgets/my_text.dart';
 

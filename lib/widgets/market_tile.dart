@@ -5,6 +5,7 @@ import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/pages/home/screens/profile/profile_screen.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/my_text.dart';
+import 'package:uni_light/widgets/profile_image.dart';
 
 class DiscountsTiles extends StatefulWidget {
   final String? pic, name, time, description;
@@ -12,13 +13,13 @@ class DiscountsTiles extends StatefulWidget {
   final String? owner;
   final List? postImages, tags;
   final double? price;
-  final Color? bgColor;
+  final String? status;
 
   const DiscountsTiles({
     Key? key,
     this.uid,
     this.owner,
-    this.bgColor,
+    this.status,
     this.pic,
     this.name,
     this.time,
@@ -185,7 +186,9 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
             children: [
               ProfileImage(
                 image: '${widget.pic}',
-                bgColor: widget.bgColor,
+                status: widget.status!,
+                height: 55,
+                width: 55,
               ),
               Expanded(
                 child: Stack(
@@ -337,116 +340,3 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
     );
   }
 }
-
-class ProfileImage extends StatelessWidget {
-  const ProfileImage({
-    Key? key,
-    this.bgColor = kOrangeColor,
-    this.image,
-  }) : super(key: key);
-  final Color? bgColor;
-  final String? image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 53,
-      height: 53,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(100),
-        boxShadow: [
-          BoxShadow(
-            color: bgColor!,
-            spreadRadius: 0,
-            blurRadius: 10,
-            offset: const Offset(0.0, 2),
-          ),
-        ],
-      ),
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.transparent,
-          cardColor: Colors.transparent,
-        ),
-        child: Card(
-          elevation: 3,
-          margin: const EdgeInsets.all(6),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: image!.isNotEmpty || image != null
-                  ? Image.network(
-                      image!,
-                      height: kHeight(context),
-                      width: kWidth(context),
-                      fit: BoxFit.fitWidth,
-                    )
-                  : const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/*widget.singlePost == true
-                                  ? const SizedBox()
-                                  : Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          right: 5,
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            '${widget.postImage1}',
-                                            width: kWidth(context),
-                                            height: kHeight(context),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              widget.singlePost == true
-                                  ? const SizedBox()
-                                  : Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 5,
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            '${widget.postImage2}',
-                                            width: kWidth(context),
-                                            height: kHeight(context),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                              widget.singlePost == true
-                                  ? Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          right: 5,
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(10),
-                                          child: Image.asset(
-                                            '${widget.post}',
-                                            width: kWidth(context),
-                                            height: kHeight(context),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox(),*/

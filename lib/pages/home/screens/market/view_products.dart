@@ -99,7 +99,7 @@ class _ViewProductsState extends State<ViewProducts> {
                         var temp = product.createAt!.toDate();
                         var time = "${temp.year}-${temp.month}-${temp.day}, ${temp.hour}:${temp.minute}";
                         return DiscountsTiles(
-                          bgColor: kOrangeColor,
+                          status: product.ownerLight ?? "Single",
                           pic: product.ownerPhoto,
                           name: product.ownerName,
                           time: time,

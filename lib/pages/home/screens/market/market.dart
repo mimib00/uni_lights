@@ -205,7 +205,7 @@ class _UniMarketState extends State<UniMarket> {
                       return DiscountsTiles(
                         uid: product.id,
                         owner: product.ownerId,
-                        bgColor: kOrangeColor,
+                        status: product.ownerLight ?? "Single",
                         pic: product.ownerPhoto,
                         name: product.ownerName,
                         time: time,

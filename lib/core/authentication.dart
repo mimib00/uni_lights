@@ -54,7 +54,6 @@ class Authentication extends ChangeNotifier {
     var doc = await _userRef.doc(user.uid).get();
     _user = Users.fromMap(doc.data()!, id: doc.id);
     _firebaseMessaging.getToken().then((token) {
-      print(token);
       if (_user?.token != null || _user?.token != token) {
         _userRef.doc(_user?.uid).set({
           "token": token
@@ -130,7 +129,6 @@ class Authentication extends ChangeNotifier {
         userData.removeWhere((key, value) => key == "photo");
         _firebaseMessaging.getToken().then((token) {
           if (token != null) {
-            print("TOKEN: $token");
             setData({
               "token": token
             });

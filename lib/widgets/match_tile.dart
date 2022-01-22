@@ -15,7 +15,6 @@ class MatchesTiles extends StatefulWidget {
   final String id;
   final String light;
   final bool isDate;
-  final Color? bgColor;
   final Function()? onTap;
 
   const MatchesTiles({
@@ -24,7 +23,6 @@ class MatchesTiles extends StatefulWidget {
     required this.onTap,
     required this.isDate,
     required this.light,
-    this.bgColor,
     this.studentPic,
     this.studentName,
     this.universityName,
@@ -91,6 +89,7 @@ class _MatchesTilesState extends State<MatchesTiles> {
 
   @override
   Widget build(BuildContext context) {
+    var user = context.watch<Authentication>().user;
     return InkWell(
       onTap: () {
         var user = context.read<Authentication>().user!;
@@ -127,7 +126,9 @@ class _MatchesTilesState extends State<MatchesTiles> {
               children: [
                 ProfileImage(
                   image: widget.studentPic!,
-                  bgColor: widget.bgColor!,
+                  status: user!.light!,
+                  height: 90,
+                  width: 90,
                 ),
                 Expanded(
                   child: SizedBox(

@@ -12,6 +12,7 @@ import 'package:uni_light/pages/home/screens/profile/profile_screen.dart';
 
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/my_text.dart';
+import 'package:uni_light/widgets/profile_image.dart';
 
 class ChatScreen extends StatefulWidget {
   final String name, photo, id;
@@ -66,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final Reference _storage = FirebaseStorage.instance.ref();
   @override
   Widget build(BuildContext context) {
-    var user = context.read<Authentication>().user;
+    var user = context.watch<Authentication>().user;
     return Scaffold(
       appBar: AppBar(
         leading: GestureDetector(
@@ -84,45 +85,11 @@ class _ChatScreenState extends State<ChatScreen> {
           color: kBlackColor,
         ),
         actions: [
-          Container(
+          ProfileImage(
+            image: widget.photo,
+            status: user!.light!,
             width: 55,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(180),
-              boxShadow: const [
-                BoxShadow(
-                  color: kGreenColor,
-                  spreadRadius: 0,
-                  blurRadius: 10,
-                  offset: Offset(0.0, 2),
-                ),
-              ],
-            ),
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                canvasColor: Colors.transparent,
-                cardColor: Colors.transparent,
-              ),
-              child: Card(
-                elevation: 3,
-                margin: const EdgeInsets.all(6),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(180),
-                ),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(180),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.photo,
-                      placeholder: (context, url) => const Icon(Icons.person, color: Colors.white),
-                      errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.white),
-                      width: kWidth(context),
-                      height: kHeight(context),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            height: 55,
           )
         ],
       ),
@@ -164,11 +131,11 @@ class _ChatScreenState extends State<ChatScreen> {
                           var msg = data.docs[index];
                           Timestamp temp = msg["time"];
                           DateTime time = temp.toDate();
-                          print("ATTACMENT: ${msg["attachment"]}");
+
                           return ChatBubble(
                             msg: msg["msg"],
                             time: "${time.hour}:${time.minute}",
-                            isSent: msg["sender"] == user?.uid!,
+                            isSent: msg["sender"] == user.uid!,
                             photo: widget.photo,
                             attachment: msg["attachment"],
                           );
@@ -214,7 +181,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                 ),
                               );
-                              var path = "messages/${user?.uid!}/${DateTime.now().microsecondsSinceEpoch}";
+                              var path = "messages/${user.uid!}/${DateTime.now().microsecondsSinceEpoch}";
                               TaskSnapshot uploadTask = await _storage.child(path).putFile(File(img.path));
 
                               if (uploadTask.state == TaskState.success) {
@@ -246,7 +213,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                   ),
                                 ),
                               );
-                              var path = "messages/${user?.uid!}/${DateTime.now().microsecondsSinceEpoch}";
+                              var path = "messages/${user.uid!}/${DateTime.now().microsecondsSinceEpoch}";
                               TaskSnapshot snapshot = await _storage.child(path).putFile(File(img.path));
                               if (snapshot.state == TaskState.success) {
                                 var imageUrl = await snapshot.ref.getDownloadURL();

@@ -7,6 +7,7 @@ import 'package:uni_light/pages/home/screens/profile/profile_screen.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/my_app_bar.dart';
 import 'package:uni_light/widgets/my_text.dart';
+import 'package:uni_light/widgets/profile_image.dart';
 import 'package:uni_light/widgets/tags.dart';
 import 'package:uni_light/widgets/uni_bottom_sheet.dart';
 
@@ -28,21 +29,11 @@ class ViewProfile extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: [
-              Image.asset(
-                'assets/images/orange_bg.png',
-                height: 275,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(180),
-                  child: CachedNetworkImage(
-                    imageUrl: user.photoURL!,
-                    height: 225,
-                    width: 225,
-                    fit: BoxFit.fitWidth,
-                  ),
-                ),
+              ProfileImage(
+                image: user.photoURL!,
+                status: user.light!,
+                width: 225,
+                height: 225,
               ),
             ],
           ),
