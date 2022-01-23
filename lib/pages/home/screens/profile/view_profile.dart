@@ -16,7 +16,8 @@ class ViewProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Users user = context.read<Authentication>().user!;
+    Users user = context.watch<Authentication>().user!;
+    print(user.email!.contains(".ac.uk"));
     return Scaffold(
       appBar: const MyAppBar(
         haveMenuButton: true,
@@ -37,15 +38,31 @@ class ViewProfile extends StatelessWidget {
               ),
             ],
           ),
-          MyText(
-            paddingTop: 20.0,
-            paddingBottom: 10.0,
-            align: TextAlign.center,
-            text: user.name!.toUpperCase(),
-            size: 16,
-            color: kBlackColor,
-            weight: FontWeight.w700,
-            fontFamily: 'Roboto Mono',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              MyText(
+                paddingTop: 20.0,
+                paddingBottom: 10.0,
+                align: TextAlign.center,
+                text: user.name!.toUpperCase(),
+                size: 16,
+                color: kBlackColor,
+                weight: FontWeight.w700,
+                fontFamily: 'Roboto Mono',
+              ),
+              Visibility(
+                visible: user.email!.contains(".ac.uk"),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 10, left: 10),
+                  child: Image.asset(
+                    'assets/images/check_badge.png',
+                    height: 25,
+                  ),
+                ),
+              ),
+            ],
           ),
           Image.asset(
             'assets/images/icons8_student.png',

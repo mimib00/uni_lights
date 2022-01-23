@@ -25,7 +25,7 @@ class ListingUpload extends StatefulWidget {
 }
 
 class _ListingUploadState extends State<ListingUpload> {
-  String value = '\$';
+  String value = '£';
   TextEditingController description = TextEditingController();
 
   TextEditingController tag = TextEditingController();
@@ -254,7 +254,13 @@ class _ListingUploadState extends State<ListingUpload> {
                       ),
                     ),
                     trailing: GestureDetector(
-                      onTap: () => tags.add(tag.text.trim()),
+                      onTap: () {
+                        setState(() {
+                          tags.add(tag.text.trim());
+                        });
+
+                        tag.clear();
+                      },
                       child: const CircleAvatar(
                         backgroundColor: kRedColor,
                         foregroundColor: Colors.white,
@@ -267,7 +273,7 @@ class _ListingUploadState extends State<ListingUpload> {
                   ),
                   MyText(
                     paddingTop: 10.0,
-                    text: '#book |  #mathbook',
+                    text: tags.map((e) => "#$e").toList().join(" | "),
                     color: kRedColor,
                     size: 11,
                     paddingBottom: 20.0,
@@ -350,10 +356,6 @@ class _ListingUploadState extends State<ListingUpload> {
                           },
                           itemBuilder: (_) {
                             return [
-                              const PopupMenuItem(
-                                child: Text("\$"),
-                                value: "\$",
-                              ),
                               const PopupMenuItem(
                                 child: Text("£"),
                                 value: "£",

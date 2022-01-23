@@ -1,13 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:provider/provider.dart';
+import 'package:uni_light/core/data_manager.dart';
 import 'package:uni_light/models/user.dart';
 import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/core/match_making.dart';
+import 'package:uni_light/pages/home/screens/inbox/chat_screen.dart';
 import 'package:uni_light/pages/home/screens/profile/profile_screen.dart';
 import 'package:uni_light/utils/constants.dart';
+import 'package:uni_light/utils/helper.dart';
 import 'package:uni_light/widgets/my_text.dart';
+import 'package:uni_light/widgets/profile_image.dart';
+import 'package:uni_light/widgets/swipe_limit.dart';
 import 'package:uni_light/widgets/tags.dart';
 
 class Home extends StatefulWidget {
@@ -39,80 +45,83 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     var user = context.watch<Authentication>().user;
-    return Padding(
-      padding: const EdgeInsets.only(top: 110),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Card(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
-            ),
-            margin: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15,
-            ),
-            child: SizedBox(
-              height: 40,
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                ),
-                child: TabBar(
-                  controller: _controller,
-                  labelColor: kPrimaryColor,
-                  unselectedLabelColor: kBlackColor,
-                  labelStyle: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 14,
-                  ),
-                  indicator: BoxDecoration(
+    int swipes = context.watch<DataManager>().swipes;
+    return swipes <= 0
+        ? const SwipeLimit()
+        : Padding(
+            padding: const EdgeInsets.only(top: 110),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
-                    color: currentIndex == 0 ? kRedColor : kGreenColor,
                   ),
-                  tabs: const [
-                    Text('Uni Mates'),
-                    Text('Uni Dates'),
-                  ],
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 15,
+                  ),
+                  child: SizedBox(
+                    height: 40,
+                    child: Theme(
+                      data: Theme.of(context).copyWith(
+                        highlightColor: Colors.transparent,
+                        splashColor: Colors.transparent,
+                      ),
+                      child: TabBar(
+                        controller: _controller,
+                        labelColor: kPrimaryColor,
+                        unselectedLabelColor: kBlackColor,
+                        labelStyle: const TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 14,
+                        ),
+                        indicator: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: currentIndex == 0 ? kRedColor : kGreenColor,
+                        ),
+                        tabs: const [
+                          Text('Uni Mates'),
+                          Text('Uni Dates'),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: StreamBuilder<dynamic>(
-              stream: stream,
-              builder: (_, snapshot) {
-                if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return const Text('No data');
-                  case ConnectionState.waiting:
-                    return const Center(child: Text('Loading...'));
-                  case ConnectionState.active:
-                    var data = snapshot.data;
-                    if (data["callBack"] == Geofire.onGeoQueryReady) {
-                      List list = List.from(data["result"]);
-                      list.removeWhere((element) => element == user!.uid);
-                      for (var key in list) {
-                        context.read<MatchMaker>().queryUsers(key, user!);
+                Expanded(
+                  child: StreamBuilder<dynamic>(
+                    stream: stream,
+                    builder: (_, snapshot) {
+                      if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return const Text('No data');
+                        case ConnectionState.waiting:
+                          return const Center(child: Text('Loading...'));
+                        case ConnectionState.active:
+                          var data = snapshot.data;
+                          if (data["callBack"] == Geofire.onGeoQueryReady) {
+                            List list = List.from(data["result"]);
+                            list.removeWhere((element) => element == user!.uid);
+                            for (var key in list) {
+                              context.read<MatchMaker>().queryUsers(key, user!);
+                            }
+                          }
+
+                          return UniDates(
+                            isDate: currentIndex == 1,
+                          );
+
+                        default:
+                          return Container();
                       }
-                    }
-
-                    return UniDates(
-                      isDate: currentIndex == 1,
-                    );
-
-                  default:
-                    return Container();
-                }
-              },
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 
@@ -134,6 +143,54 @@ class _UniDatesState extends State<UniDates> {
   bool isLike = false;
   bool isClose = false;
 
+  final CollectionReference<Map<String, dynamic>> _chatroom = FirebaseFirestore.instance.collection('chatroom');
+
+  createChatRoom(Users user, Users date) async {
+    String id = getId(user.uid!, date.uid!);
+    // check if chatrrom exists
+    bool exists = await _chatroom.doc(id).get().then((doc) => doc.exists);
+    if (exists) {
+      // Open the chat screen and get messages stream.
+      return;
+    }
+
+    // create on if it doesn't exists.
+    Map<String, dynamic> data = {
+      "users": [
+        {
+          "id": user.uid!,
+          "name": user.name!,
+          "photo_url": user.photoURL!,
+          "light": user.light,
+        },
+        {
+          "id": date.uid,
+          "name": date.name!,
+          "photo_url": date.photoURL!,
+          "light": date.light!,
+        }
+      ],
+      "last_message": {
+        "message": "",
+        "time": Timestamp.now(),
+      }
+    };
+
+    _chatroom.doc(id).set(data).then((value) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ChatScreen(
+            id: id,
+            name: date.name!,
+            photo: date.photoURL!,
+          ),
+        ),
+      );
+    });
+
+    // return true
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Users> dates = context.watch<MatchMaker>().users;
@@ -150,21 +207,11 @@ class _UniDatesState extends State<UniDates> {
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    Image.asset(
-                      index.isOdd ? 'assets/images/orange_bg.png' : 'assets/images/green bg.png',
-                      height: 250,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(180),
-                        child: CachedNetworkImage(
-                          imageUrl: currentDate!.photoURL!,
-                          height: 210,
-                          width: 210,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
+                    ProfileImage(
+                      image: currentDate!.photoURL!,
+                      status: currentDate!.light!,
+                      height: 210,
+                      width: 210,
                     ),
                   ],
                 ),
@@ -202,29 +249,37 @@ class _UniDatesState extends State<UniDates> {
                       ),
                     ),
                     // Message
-                    Container(
-                      margin: const EdgeInsets.only(top: 20),
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100),
-                        color: kPrimaryColor,
-                        boxShadow: [
-                          BoxShadow(
-                            color: kOrangeColor.withOpacity(0.63),
-                            blurRadius: 10.0,
-                            spreadRadius: 2.0,
-                            offset: const Offset(
-                              0.0,
-                              4.0,
+                    GestureDetector(
+                      onTap: () {
+                        var user = context.read<Authentication>().user!;
+                        if (user.isPremium) {
+                          createChatRoom(user, currentDate!);
+                        } else {}
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: kPrimaryColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: kOrangeColor.withOpacity(0.63),
+                              blurRadius: 10.0,
+                              spreadRadius: 2.0,
+                              offset: const Offset(
+                                0.0,
+                                4.0,
+                              ),
                             ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Image.asset(
+                            'assets/images/chat.png',
+                            height: 25,
                           ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/images/chat.png',
-                          height: 25,
                         ),
                       ),
                     ),
@@ -232,10 +287,15 @@ class _UniDatesState extends State<UniDates> {
                     GestureDetector(
                       onTap: () {
                         var user = context.read<Authentication>().user!;
-                        context.read<MatchMaker>().match(user.uid!, currentDate!.uid!, widget.isDate);
-
-                        setState(() {
-                          dates.removeAt(index);
+                        context.read<DataManager>().swipe().then((temp) {
+                          if (temp != "limit") {
+                            context.read<MatchMaker>().match(user.uid!, currentDate!.uid!, widget.isDate);
+                            setState(() {
+                              dates.removeAt(index);
+                            });
+                          } else {
+                            print(temp);
+                          }
                         });
                       },
                       child: Container(

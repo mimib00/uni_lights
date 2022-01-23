@@ -104,31 +104,6 @@ class _UniMarketState extends State<UniMarket> {
           paddingTop: 30.0,
           paddingBottom: 15.0,
         ),
-        // ListTile(
-        //   contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-        //   title: TextFormField(
-        //     textAlignVertical: TextAlignVertical.center,
-        //     cursorColor: kGreyColor,
-        //     style: const TextStyle(
-        //       color: kGreyColor,
-        //       fontSize: 12,
-        //     ),
-        //     decoration: const InputDecoration(
-        //       contentPadding: EdgeInsets.symmetric(horizontal: 15),
-        //       hintText: 'Search...',
-        //       hintStyle: TextStyle(
-        //         color: kGreyColor,
-        //         fontSize: 12,
-        //       ),
-        //       enabledBorder: InputBorder.none,
-        //       focusedBorder: InputBorder.none,
-        //     ),
-        //   ),
-        //   trailing: Image.asset(
-        //     'assets/images/filter.png',
-        //     height: 35,
-        //   ),
-        // ),
         const SizedBox(
           height: 30,
         ),
@@ -283,11 +258,18 @@ class DiscountTile extends StatelessWidget {
       List<Map<String, dynamic>> list = [];
       for (var i = 0; i < snap.docs.length; i++) {
         var temp = snap.docs[i].data();
+
         temp.addAll({
           "index": i
         });
         list.add(temp);
       }
+
+      list.removeWhere((element) {
+        Timestamp end = element["end"];
+        return end.millisecondsSinceEpoch < Timestamp.now().millisecondsSinceEpoch;
+      });
+
       return list;
     });
   }

@@ -5,9 +5,15 @@ import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/choice_button.dart';
 import 'package:uni_light/widgets/my_text.dart';
 
-class LightPicker extends StatelessWidget {
+class LightPicker extends StatefulWidget {
   const LightPicker({Key? key}) : super(key: key);
 
+  @override
+  State<LightPicker> createState() => _LightPickerState();
+}
+
+class _LightPickerState extends State<LightPicker> {
+  bool isOld = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -97,6 +103,19 @@ class LightPicker extends StatelessWidget {
             ),
           ),
         ),
+        Row(
+          children: [
+            Checkbox(
+              value: isOld,
+              onChanged: (value) {
+                setState(() {
+                  isOld = value!;
+                });
+              },
+            ),
+            const Text("By ticking this box i confirm I'm +18")
+          ],
+        ),
         Expanded(
           flex: 2,
           child: Column(
@@ -114,6 +133,14 @@ class LightPicker extends StatelessWidget {
                     shape: const StadiumBorder(),
                     highlightColor: kRedColor.withOpacity(0.1),
                     onPressed: () {
+                      if (!isOld) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('You must confirm that you are +18'),
+                            backgroundColor: kRedColor,
+                          ),
+                        );
+                      }
                       int choice = context.read<Authentication>().choice;
                       if (choice != -1) {
                         switch (choice) {

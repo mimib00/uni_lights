@@ -149,7 +149,7 @@ class _SocialState extends State<Social> {
           ),
         ),
         MyText(
-          text: 'Community posts',
+          text: 'Your Uni Community Page',
           size: 14,
           paddingLeft: 15.0,
           weight: FontWeight.w500,

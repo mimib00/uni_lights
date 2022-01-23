@@ -3,6 +3,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uni_light/core/authentication.dart';
+import 'package:uni_light/core/match_making.dart';
 import 'package:uni_light/models/post.dart';
 import 'package:uni_light/models/product.dart';
 import 'package:uni_light/models/user.dart';
@@ -27,6 +31,8 @@ class DataManager extends ChangeNotifier {
 
   int _currentIndex = 0;
   int get currentIndex => _currentIndex;
+  int _swipes = 10;
+  int get swipes => _swipes;
 
   int index = 0;
 
@@ -96,5 +102,48 @@ class DataManager extends ChangeNotifier {
       default:
         return _products.orderBy("created_at").snapshots();
     }
+  }
+
+  _restLimits(SharedPreferences prefs) async {
+    await prefs.setInt("date", DateTime.now().day);
+    await prefs.setInt("swipes", 0);
+  }
+
+  Future<String?> swipe() async {
+    return await SharedPreferences.getInstance().then((prefs) {
+      if (_swipes == null) return null;
+
+      if (swipes > 0) {
+        prefs.setInt("swipes", _swipes - 1);
+      } else {
+        return "limit";
+      }
+      notifyListeners();
+    });
+  }
+
+  checkLimits(BuildContext context) async {
+    SharedPreferences.getInstance().then((prefs) {
+      var user = context.read<Authentication>().user;
+      var date = prefs.getInt("date");
+
+      // check if they don't exist
+      if (date == null) {
+        prefs.setInt("date", DateTime.now().day);
+        prefs.setInt("swipes", 10);
+      }
+
+      if (user == null) return;
+
+      // check if user is premium then skip
+      if (user.isPremium) prefs.setInt("swipes", 9999999);
+
+      // reset every day
+      if (date != DateTime.now().day) {
+        _restLimits(prefs);
+      }
+
+      _swipes = prefs.getInt("swipes")!;
+    });
   }
 }

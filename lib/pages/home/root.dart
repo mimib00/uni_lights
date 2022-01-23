@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_light/core/authentication.dart';
+import 'package:uni_light/core/data_manager.dart';
 import 'package:uni_light/models/user.dart';
 import 'package:uni_light/pages/home/screens/inbox/inbox.dart';
 import 'package:uni_light/pages/home/screens/likes/likes.dart';
@@ -30,16 +31,16 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-  int selectedScreen = 6;
+  int selectedScreen = 0;
 
   List<Widget> screens = [
-    const MyMatches(),
+    const UserProfile(),
     const MyLikes(),
     const UniMarket(),
     const Home(),
     const Social(),
     const Inbox(),
-    const UserProfile(),
+    const MyMatches(),
   ];
 
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
@@ -65,6 +66,8 @@ class _RootScreenState extends State<RootScreen> {
     Future.delayed(Duration.zero, () {
       isNewUser();
     });
+
+    context.read<DataManager>().checkLimits(context);
   }
 
   @override
@@ -133,8 +136,8 @@ class _RootScreenState extends State<RootScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     BottomNavBarItem(
-                      icon: 'assets/images/group_44.png',
-                      iconSize: 28.0,
+                      icon: 'assets/images/ic_sharp-account-circle.png',
+                      iconSize: 27,
                       isSelected: selectedScreen == 0,
                       onTap: () {
                         setState(() {
@@ -183,9 +186,10 @@ class _RootScreenState extends State<RootScreen> {
                         });
                       },
                     ),
+
                     BottomNavBarItem(
-                      icon: 'assets/images/ic_sharp-account-circle.png',
-                      iconSize: 27,
+                      icon: 'assets/images/group_44.png',
+                      iconSize: 28.0,
                       isSelected: selectedScreen == 6,
                       onTap: () {
                         setState(() {

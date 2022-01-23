@@ -39,7 +39,6 @@ class MatchMaker extends ChangeNotifier {
         _users.add(Users.fromSnapshot(doc.data()!, id: doc.id));
         notifyListeners();
       }
-      // print(doc.data());
     });
   }
 
@@ -78,7 +77,7 @@ class MatchMaker extends ChangeNotifier {
         ref.doc(id).set(data);
       }
     });
-    _users.removeWhere((element) => element.uid == dateId);
+    // _users.removeWhere((element) => element.uid == dateId);
 
     notifyListeners();
   }

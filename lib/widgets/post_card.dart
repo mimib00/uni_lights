@@ -26,12 +26,14 @@ class _PostCardState extends State<PostCard> {
   final TextEditingController _controller = TextEditingController();
   String name = '';
   String image = '';
+  String light = "";
   getPostOwnerName() async {
     var ref = await FirebaseFirestore.instance.collection("users").doc(widget.post.ownerId).get();
     var data = ref.data()!;
     setState(() {
       name = data['name'];
       image = data['photo_url'];
+      light = data["light"];
     });
   }
 
@@ -54,7 +56,7 @@ class _PostCardState extends State<PostCard> {
               image: image,
               width: 55,
               height: 55,
-              status: user.light!,
+              status: light,
             ),
             const SizedBox(width: 8),
             Text(
