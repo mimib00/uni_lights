@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_light/core/authentication.dart';
-import 'package:uni_light/core/match_making.dart';
 import 'package:uni_light/models/post.dart';
 import 'package:uni_light/models/product.dart';
 import 'package:uni_light/models/user.dart';
@@ -111,8 +110,6 @@ class DataManager extends ChangeNotifier {
 
   Future<String?> swipe() async {
     return await SharedPreferences.getInstance().then((prefs) {
-      if (_swipes == null) return null;
-
       if (swipes > 0) {
         prefs.setInt("swipes", _swipes - 1);
       } else {

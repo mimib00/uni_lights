@@ -17,7 +17,7 @@ class ViewProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Users user = context.watch<Authentication>().user!;
-    print(user.email!.contains(".ac.uk"));
+
     return Scaffold(
       appBar: const MyAppBar(
         haveMenuButton: true,

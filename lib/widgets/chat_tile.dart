@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:uni_light/pages/home/screens/inbox/chat_screen.dart';
 import 'package:uni_light/utils/constants.dart';

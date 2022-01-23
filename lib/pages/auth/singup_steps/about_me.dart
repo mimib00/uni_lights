@@ -20,16 +20,17 @@ class AboutMe extends StatefulWidget {
 
 class _AboutMeState extends State<AboutMe> {
   String? chooseGender, chooseInterest, year;
+  String university = "";
 
   final TextEditingController _date = TextEditingController();
-  final TextEditingController _university = TextEditingController();
+  // final TextEditingController _university = TextEditingController();
   final TextEditingController _course = TextEditingController();
   DateTime? bDate;
 
   File? image;
 
   bool _validateInput(BuildContext context) {
-    if (_date.text.trim().isEmpty || _university.text.trim().isEmpty || _course.text.trim().isEmpty || chooseGender == null || chooseInterest == null || year == null) {
+    if (_date.text.trim().isEmpty || university.trim().isEmpty || _course.text.trim().isEmpty || chooseGender == null || chooseInterest == null || year == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('No field can be empty'),
@@ -227,10 +228,61 @@ class _AboutMeState extends State<AboutMe> {
                       FocusScope.of(context).unfocus();
                     },
                   ),
-                  MyTextField(
-                    hintText: 'University',
-                    controller: _university,
+                  Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 1,
+                    color: kLightGreyColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: PopupMenuButton<String>(
+                      initialValue: university,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Row(
+                            children: [
+                              MyText(
+                                text: university,
+                                size: 24,
+                                weight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: kPrimaryColor,
+                                size: 40,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      onSelected: (uni) {
+                        setState(() {
+                          university = uni;
+                        });
+                      },
+                      itemBuilder: (_) {
+                        universities.sort();
+                        return universities
+                            .map(
+                              (e) => PopupMenuItem(
+                                child: Text(e),
+                                value: e,
+                              ),
+                            )
+                            .toList();
+                      },
+                    ),
                   ),
+                  // MyTextField(
+                  //   hintText: 'University',
+                  //   controller: _university,
+                  // ),
                   MyTextField(
                     hintText: 'Course',
                     controller: _course,
@@ -306,7 +358,7 @@ class _AboutMeState extends State<AboutMe> {
                   if (isValid) {
                     var data = {
                       "gender": chooseGender,
-                      "university": _university.text.trim(),
+                      "university": university.trim(),
                       "course_name": _course.text.trim(),
                       "year": year,
                       "intrested_in": chooseInterest,

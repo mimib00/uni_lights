@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';

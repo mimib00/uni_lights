@@ -394,7 +394,7 @@ class ChatBubble extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.only(top: 20, left: 15),
             child: Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -513,7 +513,7 @@ class ChatBubble extends StatelessWidget {
         : Padding(
             padding: const EdgeInsets.only(top: 20, left: 15),
             child: Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,

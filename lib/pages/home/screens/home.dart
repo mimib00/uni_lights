@@ -26,7 +26,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   var currentIndex = 0;
   TabController? _controller;
-  double radius = 5;
+  double radius = 10;
 
   late Stream stream;
   @override
@@ -293,8 +293,6 @@ class _UniDatesState extends State<UniDates> {
                             setState(() {
                               dates.removeAt(index);
                             });
-                          } else {
-                            print(temp);
                           }
                         });
                       },
