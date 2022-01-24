@@ -20,7 +20,7 @@ class AboutMe extends StatefulWidget {
 
 class _AboutMeState extends State<AboutMe> {
   String? chooseGender, chooseInterest, year;
-  String university = "";
+  String university = universities[0];
 
   final TextEditingController _date = TextEditingController();
   // final TextEditingController _university = TextEditingController();
@@ -60,7 +60,6 @@ class _AboutMeState extends State<AboutMe> {
 
   @override
   Widget build(BuildContext context) {
-    // File? image = context.watch<UserController>().image;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

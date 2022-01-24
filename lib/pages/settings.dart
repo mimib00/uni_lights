@@ -562,7 +562,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MyText(
-                            text: 'Interests',
+                            text: 'Interested in',
                             size: 12,
                             color: kGreyColor,
                           ),
@@ -803,7 +803,7 @@ class _ChangeInterstsState extends State<ChangeIntersts> {
   Widget build(BuildContext context) {
     Users user = context.read<Authentication>().user!;
     return AlertDialog(
-      title: const Text("Chnage Your Intersts"),
+      title: const Text("Change Interested In"),
       content: DropdownButton<String>(
         value: current,
         items: interestedIn

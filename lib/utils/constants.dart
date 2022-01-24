@@ -14,7 +14,7 @@ const kGreyColor3 = Color(0xffC4C4C4);
 const kDarkGreyColor = Color(0xff434343);
 const kBlackColor = Color(0xff373131);
 const kRedColor = Color(0xffEF8484);
-const kGreenColor = Color(0xffB4E6A7);
+const kGreenColor = Colors.green;
 const kOrangeColor = Color(0xffFFB57F);
 Color kBorderColor = const Color(0xff959595).withOpacity(0.51);
 

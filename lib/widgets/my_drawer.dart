@@ -7,6 +7,7 @@ import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/pages/home/screens/market/view_products.dart';
 import 'package:uni_light/pages/settings.dart';
 import 'package:uni_light/utils/constants.dart';
+import 'package:uni_light/widgets/profile_image.dart';
 
 import 'my_text.dart';
 
@@ -49,34 +50,11 @@ class MyDrawer extends StatelessWidget {
                         Stack(
                           alignment: Alignment.center,
                           children: [
-                            Image.asset(
-                              'assets/images/drawer_back.png',
-                              height: kHeight(context) * 0.2,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              width: 150,
-                              height: 150,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(180),
-                                child: CachedNetworkImage(
-                                  imageUrl: user.photoURL!,
-                                  height: 225,
-                                  width: 225,
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: kOrangeColor,
-                                    spreadRadius: 0,
-                                    blurRadius: 20,
-                                    offset: Offset(0.0, 2),
-                                  ),
-                                ],
-                              ),
+                            ProfileImage(
+                              image: user.photoURL!,
+                              height: 200,
+                              width: 200,
+                              status: user.light!,
                             ),
                           ],
                         ),
@@ -174,31 +152,11 @@ class MyDrawer extends StatelessWidget {
                               color: kDarkGreyColor,
                             ),
                             MyText(
-                              text: 'Contact us',
-                              size: 13,
-                              color: kDarkGreyColor,
-                            ),
-                            MyText(
-                              text: '|',
-                              size: 13,
-                              color: kDarkGreyColor,
-                            ),
-                            MyText(
-                              text: 'Privacy',
+                              text: 'Terms and conditions',
                               size: 13,
                               color: kDarkGreyColor,
                             ),
                           ],
-                        ),
-                        MyText(
-                          text: 'Terms and conditions',
-                          size: 13,
-                          color: kDarkGreyColor,
-                        ),
-                        MyText(
-                          text: 'Report a problem',
-                          size: 13,
-                          color: kDarkGreyColor,
                         ),
                       ],
                     ),

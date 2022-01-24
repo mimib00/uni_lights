@@ -42,110 +42,112 @@ class _ViewProductsState extends State<ViewProducts> {
       appBar: const MyAppBar(
         haveBackButton: true,
       ),
-      body: Column(
-        children: [
-          Image.asset(
-            'assets/images/upload.png',
-            fit: BoxFit.cover,
-            width: kWidth(context),
-            height: 235,
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          MyText(
-            text: 'Your selling announcement',
-            size: 16,
-            weight: FontWeight.w700,
-            paddingBottom: 30.0,
-            color: kDarkGreyColor,
-            fontFamily: 'Roboto Mono',
-            align: TextAlign.center,
-          ),
-          FutureBuilder<List<Products>>(
-            future: fetchMyProducts(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Image.asset(
-                        'assets/images/clarity_sad-face-line.png',
-                        height: 35,
-                      ),
-                      Center(
-                        child: MyText(
-                          paddingTop: 15.0,
-                          text: 'There are no post to see',
-                          size: 12,
-                          color: kGreyColor3,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/images/upload.png',
+              fit: BoxFit.cover,
+              width: kWidth(context),
+              height: 235,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            MyText(
+              text: 'Your selling announcement',
+              size: 16,
+              weight: FontWeight.w700,
+              paddingBottom: 30.0,
+              color: kDarkGreyColor,
+              fontFamily: 'Roboto Mono',
+              align: TextAlign.center,
+            ),
+            FutureBuilder<List<Products>>(
+              future: fetchMyProducts(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Image.asset(
+                          'assets/images/clarity_sad-face-line.png',
+                          height: 35,
                         ),
-                      ),
-                    ],
-                  );
-                case ConnectionState.waiting:
-                  return const Text('Loading...');
-                case ConnectionState.done:
-                  var data = snapshot.data;
-
-                  return ListView.builder(
-                      itemCount: data?.length,
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        var product = data![index];
-                        var temp = product.createAt!.toDate();
-                        var time = "${temp.year}-${temp.month}-${temp.day}, ${temp.hour}:${temp.minute}";
-                        return DiscountsTiles(
-                          status: product.ownerLight ?? "Single",
-                          pic: product.ownerPhoto,
-                          name: product.ownerName,
-                          time: time,
-                          postImages: product.photos,
-                          description: product.description,
-                          tags: product.tags,
-                          price: product.price,
-                        );
-                      });
-
-                default:
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Image.asset(
-                        'assets/images/clarity_sad-face-line.png',
-                        height: 35,
-                      ),
-                      Center(
-                        child: MyText(
-                          paddingTop: 15.0,
-                          text: 'There are no post to see',
-                          size: 12,
-                          color: kGreyColor3,
+                        Center(
+                          child: MyText(
+                            paddingTop: 15.0,
+                            text: 'There are no post to see',
+                            size: 12,
+                            color: kGreyColor3,
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-              }
-            },
-          ),
-          // const DiscountsTiles(
-          //   bgColor: kOrangeColor,
-          //   pic: 'assets/images/boy.png',
-          //   name: 'Sam Jones',
-          //   time: 'Monday, 17:30',
-          //   postImages: [],
-          //   description: ' Est voluptate in esse tempor velit ut irure duis sit anim ea officia ea officia ea officia ea officia aliquip.Aute elit minim elit esse laboris...',
-          //   tags: [],
-          //   price: 17.55,
-          // ),
+                      ],
+                    );
+                  case ConnectionState.waiting:
+                    return const Text('Loading...');
+                  case ConnectionState.done:
+                    var data = snapshot.data;
 
-          const SizedBox(
-            height: 30,
-          ),
-        ],
+                    return ListView.builder(
+                        itemCount: data?.length,
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var product = data![index];
+                          var temp = product.createAt!.toDate();
+                          var time = "${temp.year}-${temp.month}-${temp.day}, ${temp.hour}:${temp.minute}";
+                          return DiscountsTiles(
+                            status: product.ownerLight ?? "Single",
+                            pic: product.ownerPhoto,
+                            name: product.ownerName,
+                            time: time,
+                            postImages: product.photos,
+                            description: product.description,
+                            tags: product.tags,
+                            price: product.price,
+                          );
+                        });
+
+                  default:
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Image.asset(
+                          'assets/images/clarity_sad-face-line.png',
+                          height: 35,
+                        ),
+                        Center(
+                          child: MyText(
+                            paddingTop: 15.0,
+                            text: 'There are no post to see',
+                            size: 12,
+                            color: kGreyColor3,
+                          ),
+                        ),
+                      ],
+                    );
+                }
+              },
+            ),
+            // const DiscountsTiles(
+            //   bgColor: kOrangeColor,
+            //   pic: 'assets/images/boy.png',
+            //   name: 'Sam Jones',
+            //   time: 'Monday, 17:30',
+            //   postImages: [],
+            //   description: ' Est voluptate in esse tempor velit ut irure duis sit anim ea officia ea officia ea officia ea officia aliquip.Aute elit minim elit esse laboris...',
+            //   tags: [],
+            //   price: 17.55,
+            // ),
+
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
       ),
     );
   }

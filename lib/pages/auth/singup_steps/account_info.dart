@@ -114,7 +114,7 @@ class AccountInfo extends StatelessWidget {
                   controller: _name,
                 ),
                 MyTextField(
-                  hintText: 'Email',
+                  hintText: 'Email (University email preferred)',
                   controller: _email,
                 ),
                 MyTextField(
@@ -156,56 +156,8 @@ class AccountInfo extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontFamily: 'Roboto',
-                      color: kGreyColor,
-                    ),
-                    children: [
-                      TextSpan(text: 'This app is dedicated strictly for '),
-                      TextSpan(
-                        text: '18 years ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'Roboto',
-                          color: kGreyColor,
-                        ),
-                      ),
-                      TextSpan(text: 'and over students. By creating an account you agree with our'),
-                      TextSpan(
-                        text: ' Terms of Use ',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'Roboto',
-                          color: kGreyColor,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                      TextSpan(text: 'and'),
-                      TextSpan(
-                        text: ' Privacy Policy',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Roboto', color: kGreyColor, decoration: TextDecoration.underline),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(
                   height: 20,
-                ),
-                Center(
-                  child: MyText(
-                    text: 'Who can register?',
-                    size: 13,
-                    weight: FontWeight.w500,
-                    color: kRedColor,
-                    fontFamily: 'Roboto',
-                    decoration: TextDecoration.underline,
-                  ),
                 ),
               ],
             ),
