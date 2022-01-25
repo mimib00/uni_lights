@@ -34,7 +34,7 @@ void main() async {
 
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
 
-  await Purchases.setup("goog_tOZZTviZpwAnnxrISJmrevEoqWH");
+  await Purchases.setup("goog_auKOGwwRIdbYuUdLHNBCiMnMbjh");
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

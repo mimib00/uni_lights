@@ -99,7 +99,7 @@ class Authentication extends ChangeNotifier {
       Purchases.getPurchaserInfo().then(
         (purchaserInfo) {
           if (purchaserInfo.activeSubscriptions.isNotEmpty) {
-            _user!.isPremium = purchaserInfo.activeSubscriptions[0] == "uni_499_1m";
+            _user!.isPremium = purchaserInfo.activeSubscriptions[0] == "uni_light_499_1m";
 
             notifyListeners();
           }

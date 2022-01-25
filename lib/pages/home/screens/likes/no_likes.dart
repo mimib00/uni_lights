@@ -15,9 +15,7 @@ class NoLikes extends StatefulWidget {
 }
 
 class _NoLikesState extends State<NoLikes> {
-  // static const _apiKey = "goog_tOZZTviZpwAnnxrISJmrevEoqWH";
-
-  late Package package;
+  Package? package;
   getProducts() async {
     try {
       Offerings offerings = await Purchases.getOfferings();
@@ -101,7 +99,7 @@ class _NoLikesState extends State<NoLikes> {
                         await Purchases.setAttributes({
                           "id": user.uid!
                         });
-                        await Purchases.purchasePackage(package);
+                        await Purchases.purchasePackage(package!);
 
                         context.read<Authentication>().checkSub();
                       } on PlatformException catch (e) {
