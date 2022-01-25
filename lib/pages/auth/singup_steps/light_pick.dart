@@ -4,6 +4,7 @@ import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/choice_button.dart';
 import 'package:uni_light/widgets/my_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LightPicker extends StatefulWidget {
   const LightPicker({Key? key}) : super(key: key);
@@ -181,26 +182,33 @@ class _LightPickerState extends State<LightPicker> {
                   ),
                 ),
               ),
-              RichText(
-                textAlign: TextAlign.center,
-                text: const TextSpan(
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: 'Roboto',
-                    color: kGreyColor,
+              GestureDetector(
+                onTap: () => {
+                  launch("https://bit.ly/3ACCpfJ"),
+                  launch("https://bit.ly/3nYhkXX"),
+                  launch("https://bit.ly/3IEeUFJ")
+                },
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'Roboto',
+                      color: kGreyColor,
+                    ),
+                    children: [
+                      TextSpan(text: 'By creating an account you agree with our\n'),
+                      TextSpan(
+                        text: 'Terms of Use ',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Roboto', color: kGreyColor, decoration: TextDecoration.underline),
+                      ),
+                      TextSpan(text: 'and'),
+                      TextSpan(
+                        text: ' Privacy Policy',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Roboto', color: kGreyColor, decoration: TextDecoration.underline),
+                      ),
+                    ],
                   ),
-                  children: [
-                    TextSpan(text: 'By creating an account you agree with our\n'),
-                    TextSpan(
-                      text: 'Terms of Use ',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Roboto', color: kGreyColor, decoration: TextDecoration.underline),
-                    ),
-                    TextSpan(text: 'and'),
-                    TextSpan(
-                      text: ' Privacy Policy',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, fontFamily: 'Roboto', color: kGreyColor, decoration: TextDecoration.underline),
-                    ),
-                  ],
                 ),
               ),
             ],

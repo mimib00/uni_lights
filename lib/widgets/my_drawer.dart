@@ -8,6 +8,7 @@ import 'package:uni_light/pages/home/screens/market/view_products.dart';
 import 'package:uni_light/pages/settings.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/profile_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'my_text.dart';
 
@@ -141,22 +142,39 @@ class MyDrawer extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            MyText(
-                              text: 'About us',
-                              size: 13,
-                              color: kDarkGreyColor,
+                            GestureDetector(
+                              onTap: () => launch("mailto:contact@unilightsapp.com"),
+                              child: MyText(
+                                text: 'Contact us',
+                                size: 13,
+                                color: kDarkGreyColor,
+                              ),
                             ),
                             MyText(
                               text: '|',
                               size: 13,
                               color: kDarkGreyColor,
                             ),
-                            MyText(
-                              text: 'Terms and conditions',
-                              size: 13,
-                              color: kDarkGreyColor,
+                            GestureDetector(
+                              onTap: () => {
+                                launch("https://bit.ly/3ACCpfJ"),
+                                launch("https://bit.ly/3nYhkXX")
+                              },
+                              child: MyText(
+                                text: 'Privacy',
+                                size: 13,
+                                color: kDarkGreyColor,
+                              ),
                             ),
                           ],
+                        ),
+                        GestureDetector(
+                          onTap: () => launch("https://bit.ly/3IEeUFJ"),
+                          child: MyText(
+                            text: 'Terms and conditions',
+                            size: 13,
+                            color: kDarkGreyColor,
+                          ),
                         ),
                       ],
                     ),
