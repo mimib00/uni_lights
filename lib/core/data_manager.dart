@@ -62,6 +62,10 @@ class DataManager extends ChangeNotifier {
     _posts.doc(uid).delete();
   }
 
+  void deleteProduct(String uid) {
+    _products.doc(uid).delete();
+  }
+
   Future<Products> addProduct(Products product) async {
     List<String> images = [];
     var data = product.toMap()["data"];

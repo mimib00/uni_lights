@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_light/core/authentication.dart';
+import 'package:uni_light/core/data_manager.dart';
 import 'package:uni_light/pages/home/screens/profile/profile_screen.dart';
 import 'package:uni_light/utils/constants.dart';
 import 'package:uni_light/widgets/my_text.dart';
@@ -34,20 +35,6 @@ class DiscountsTiles extends StatefulWidget {
 }
 
 class _DiscountsTilesState extends State<DiscountsTiles> {
-  bool? reportUser = false;
-
-  void showReportUser() {
-    setState(() {
-      reportUser = true;
-    });
-  }
-
-  void hideReportUser() {
-    setState(() {
-      reportUser = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var user = context.read<Authentication>().user!;
@@ -219,18 +206,57 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () => showReportUser(),
-                                  icon: const Icon(
-                                    Icons.more_horiz,
-                                    color: kGreyColor3,
-                                    size: 30,
+                            Visibility(
+                              visible: user.uid == widget.owner,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  PopupMenuButton<String>(
+                                    icon: const Icon(
+                                      Icons.more_horiz,
+                                      color: kGreyColor3,
+                                      size: 30,
+                                    ),
+                                    tooltip: "More",
+                                    onSelected: (value) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                          title: const Center(
+                                            child: Text("Warning!"),
+                                          ),
+                                          titleTextStyle: const TextStyle(color: Colors.red, fontSize: 28),
+                                          content: const Text("Are you sure you want to delete this post permanently?"),
+                                          actionsAlignment: MainAxisAlignment.center,
+                                          actions: [
+                                            OutlinedButton(
+                                              onPressed: () {
+                                                context.read<DataManager>().deleteProduct(widget.uid!);
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("Yes"),
+                                            ),
+                                            OutlinedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("No"),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    itemBuilder: (context) => [
+                                      const PopupMenuItem<String>(
+                                        child: Text(
+                                          'Delete',
+                                        ),
+                                        value: "delete",
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
@@ -279,57 +305,6 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
                         ),
                       ],
                     ),
-                    reportUser == true
-                        ? GestureDetector(
-                            onTap: () => hideReportUser(),
-                            child: Container(
-                              height: 250,
-                              width: kWidth(context),
-                              color: kPrimaryColor.withOpacity(0.4),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                      top: 50,
-                                      right: 15,
-                                    ),
-                                    width: 117,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      gradient: const LinearGradient(
-                                        colors: [
-                                          kRedColor,
-                                          kRedColor,
-                                          kPrimaryColor,
-                                        ],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/entypo_block.png',
-                                          color: kPrimaryColor,
-                                          height: 15,
-                                        ),
-                                        MyText(
-                                          text: 'Report this post',
-                                          size: 10,
-                                          weight: FontWeight.w500,
-                                          color: kPrimaryColor,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
                   ],
                 ),
               ),

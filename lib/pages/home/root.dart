@@ -79,34 +79,37 @@ class _RootScreenState extends State<RootScreen> {
         globalKey: _key,
       ),
       endDrawer: const MyDrawer(),
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
-      extendBody: true,
+      // extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: screens[selectedScreen],
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          setState(() {
-            selectedScreen = 3;
-          });
-        },
-        child: Container(
-          margin: const EdgeInsets.only(top: 100, right: 2),
-          height: 70,
-          width: 70,
-          padding: const EdgeInsets.only(bottom: 4),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-            image: const DecorationImage(
-              image: AssetImage('assets/images/ellipse_141.png'),
-              fit: BoxFit.cover,
+      floatingActionButton: Visibility(
+        visible: MediaQuery.of(context).viewInsets.bottom == 0,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              selectedScreen = 3;
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.only(top: 100, right: 2),
+            height: 70,
+            width: 70,
+            padding: const EdgeInsets.only(bottom: 4),
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+              image: const DecorationImage(
+                image: AssetImage('assets/images/ellipse_141.png'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(100),
             ),
-            borderRadius: BorderRadius.circular(100),
-          ),
-          child: Center(
-            child: Image.asset(
-              'assets/images/heart_white.png',
-              height: 25,
+            child: Center(
+              child: Image.asset(
+                'assets/images/heart_white.png',
+                height: 25,
+              ),
             ),
           ),
         ),

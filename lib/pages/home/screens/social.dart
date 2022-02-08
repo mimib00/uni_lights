@@ -222,16 +222,25 @@ class _SocialState extends State<Social> {
                 return const Text('Loading...');
               case ConnectionState.active:
                 if (snapshot.data!.size > 0) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    physics: const BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return PostCard(
-                        post: Post.fromMap(snapshot.data!.docs[index].data(), snapshot.data!.docs[index].id),
-                      );
-                    },
+                  return Column(
+                    children: snapshot.data!.docs
+                        .map(
+                          (e) => PostCard(
+                            post: Post.fromMap(e.data(), e.id),
+                          ),
+                        )
+                        .toList(),
                   );
+                  // return ListView.builder(
+                  //   itemCount: snapshot.data!.docs.length,
+                  //   physics: const BouncingScrollPhysics(),
+                  //   shrinkWrap: true,
+                  //   itemBuilder: (_, index) {
+                  //     return PostCard(
+                  //       post: Post.fromMap(snapshot.data!.docs[index].data(), snapshot.data!.docs[index].id),
+                  //     );
+                  //   },
+                  // );
                 } else {
                   return Container();
                 }

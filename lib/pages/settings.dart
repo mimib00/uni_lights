@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text("Chnage Your Name"),
+                        title: const Text("Change Your Name"),
                         content: SizedBox(
                           height: 100,
                           child: Column(
@@ -199,7 +199,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text("Chnage Your Email"),
+                        title: const Text("Change Your Email"),
                         content: SizedBox(
                           height: 200,
                           child: Column(
@@ -286,7 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text("Chnage Your Birthday"),
+                        title: const Text("Change Your Birthday"),
                         content: TextField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -703,7 +703,7 @@ class _ChangeYearState extends State<ChangeYear> {
   Widget build(BuildContext context) {
     Users user = context.read<Authentication>().user!;
     return AlertDialog(
-      title: const Text("Chnage Your Year"),
+      title: const Text("Change Your Year"),
       content: DropdownButton<String>(
         value: current,
         items: yearOfStudy
@@ -753,7 +753,7 @@ class _ChangeLightState extends State<ChangeLight> {
   Widget build(BuildContext context) {
     Users user = context.read<Authentication>().user!;
     return AlertDialog(
-      title: const Text("Chnage Your Light"),
+      title: const Text("Change Your Light"),
       content: DropdownButton<String>(
         value: current,
         items: light
@@ -798,14 +798,15 @@ class ChangeIntersts extends StatefulWidget {
 }
 
 class _ChangeInterstsState extends State<ChangeIntersts> {
-  String current = interestedIn[0];
+  String current = '';
   @override
   Widget build(BuildContext context) {
-    Users user = context.read<Authentication>().user!;
+    Users user = context.watch<Authentication>().user!;
+
     return AlertDialog(
       title: const Text("Change Interested In"),
       content: DropdownButton<String>(
-        value: current,
+        value: current == '' ? user.intrestedIn! : current,
         items: interestedIn
             .map(
               (e) => DropdownMenuItem<String>(

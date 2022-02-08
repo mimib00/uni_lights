@@ -18,23 +18,27 @@ class PostCard extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
+  // final TextEditingController controller = TextEditingController();
+
   @override
   State<PostCard> createState() => _PostCardState();
 }
 
 class _PostCardState extends State<PostCard> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController controller = TextEditingController();
   String name = '';
   String image = '';
   String light = "";
   getPostOwnerName() async {
     var ref = await FirebaseFirestore.instance.collection("users").doc(widget.post.ownerId).get();
     var data = ref.data()!;
-    setState(() {
-      name = data['name'];
-      image = data['photo_url'];
-      light = data["light"];
-    });
+    if (mounted) {
+      setState(() {
+        name = data['name'];
+        image = data['photo_url'];
+        light = data["light"];
+      });
+    }
   }
 
   @override
@@ -156,6 +160,9 @@ class _PostCardState extends State<PostCard> {
                   borderRadius: BorderRadius.circular(10),
                   child: CachedNetworkImage(
                     imageUrl: widget.post.attachment,
+                    height: 300,
+                    width: kWidth(context),
+                    fit: BoxFit.fitWidth,
                   ),
                 ),
               ),
@@ -182,14 +189,14 @@ class _PostCardState extends State<PostCard> {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: TextField(
-                  controller: _controller,
+                  controller: controller,
                   decoration: const InputDecoration(
                     hintText: "Leave a comment...",
                     hintStyle: TextStyle(fontFamily: "Poppins", fontSize: 14, color: kGreyColor3),
                   ),
                   onSubmitted: (value) {
                     widget.post.postComment(user, value);
-                    _controller.clear();
+                    controller.clear();
                   },
                 ),
                 trailing: Padding(
