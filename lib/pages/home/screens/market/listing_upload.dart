@@ -16,6 +16,7 @@ import 'package:uni_light/widgets/my_button.dart';
 import 'package:uni_light/widgets/my_text.dart';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListingUpload extends StatefulWidget {
   const ListingUpload({Key? key}) : super(key: key);
@@ -111,28 +112,35 @@ class _ListingUploadState extends State<ListingUpload> {
                 ),
                 Expanded(
                   flex: 8,
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: kDarkGreyColor,
-                        fontFamily: 'Poppins',
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Before completing the form below,\nplease verify the ',
+                  child: GestureDetector(
+                    onTap: () => {
+                      launch("https://bit.ly/3ACCpfJ"),
+                      launch("https://bit.ly/3nYhkXX"),
+                      launch("https://bit.ly/3IEeUFJ")
+                    },
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: const TextSpan(
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: kDarkGreyColor,
+                          fontFamily: 'Poppins',
                         ),
-                        TextSpan(
-                          text: 'Terms and Conditions',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
+                        children: [
+                          TextSpan(
+                            text: 'Before completing the form below,\nplease verify the ',
                           ),
-                        ),
-                        TextSpan(
-                          text: ' !',
-                        ),
-                      ],
+                          TextSpan(
+                            text: 'Terms and Conditions',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' !',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
