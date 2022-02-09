@@ -1,5 +1,4 @@
 // ignore_for_file: must_be_immutable
-
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +32,9 @@ class _SocialState extends State<Social> {
   void getImage() async {
     final ImagePicker _picker = ImagePicker();
     var temp = await _picker.pickImage(source: ImageSource.gallery);
-
-    image = File(temp!.path);
+    setState(() {
+      image = File(temp!.path);
+    });
   }
 
   @override
@@ -45,212 +45,218 @@ class _SocialState extends State<Social> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      physics: const BouncingScrollPhysics(),
-      children: [
-        expandCard == true
-            ? const SizedBox()
-            : ListTile(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-                title: Card(
-                  margin: EdgeInsets.zero,
-                  elevation: 4,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextFormField(
-                    onTap: () {
-                      setState(() {
-                        expandCard = true;
-                      });
-                    },
-                    cursorColor: kGreyColor,
-                    style: const TextStyle(
-                      color: kGreyColor,
-                      fontSize: 12,
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          expandCard == true
+              ? const SizedBox()
+              : ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                  title: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                      hintText: 'What\'s on your mind?',
-                      hintStyle: TextStyle(
+                    child: TextFormField(
+                      onTap: () {
+                        setState(() {
+                          expandCard = true;
+                        });
+                      },
+                      cursorColor: kGreyColor,
+                      style: const TextStyle(
                         color: kGreyColor,
                         fontSize: 12,
                       ),
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                        hintText: 'What\'s on your mind?',
+                        hintStyle: TextStyle(
+                          color: kGreyColor,
+                          fontSize: 12,
+                        ),
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                      ),
                     ),
                   ),
-                ),
-                trailing: Wrap(
-                  spacing: 10.0,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        var user = context.read<Authentication>().user!;
-                        getImage();
-                        if (image != null) {
-                          Post post = Post(
-                            caption: "",
-                            university: user.university,
-                            attachment: image != null ? image!.path : "",
-                          );
-                          context.read<DataManager>().addPost(user, post);
-                        }
-                      },
-                      child: const CircleAvatar(
-                        backgroundColor: kRedColor,
-                        foregroundColor: Colors.white,
-                        child: Icon(
-                          Icons.camera_alt,
-                          size: 25,
+                  trailing: Wrap(
+                    spacing: 10.0,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          var user = context.read<Authentication>().user!;
+                          getImage();
+                          if (image != null) {
+                            Post post = Post(
+                              caption: "",
+                              university: user.university,
+                              attachment: image != null ? image!.path : "",
+                            );
+                            context.read<DataManager>().addPost(user, post);
+                          }
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: kRedColor,
+                          foregroundColor: Colors.white,
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 25,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-        expandCard == true ? cardExpand() : const SizedBox(),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 20),
-          height: 146,
-          child: GestureDetector(
-            onTap: () {
-              launch("https://www.fatsoma.com/uni-lights");
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      "assets/images/backroom.png",
-                      width: kWidth(context),
-                      height: kHeight(context),
-                      fit: BoxFit.cover,
-                    ),
-                    const Center(
-                      child: Text(
-                        "Uni Lights Single Parties.",
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: kPrimaryColor,
-                          fontFamily: 'Roboto Mono',
-                          fontWeight: FontWeight.w500,
-                          backgroundColor: Colors.black54,
-                        ),
-                        textAlign: TextAlign.center,
+          expandCard == true ? cardExpand() : const SizedBox(),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            height: 146,
+            child: GestureDetector(
+              onTap: () {
+                launch("https://www.fatsoma.com/uni-lights");
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Stack(
+                    children: [
+                      Image.asset(
+                        "assets/images/backroom.png",
+                        width: kWidth(context),
+                        height: kHeight(context),
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ],
+                      const Center(
+                        child: Text(
+                          "Uni Lights Single Parties.",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: kPrimaryColor,
+                            fontFamily: 'Roboto Mono',
+                            fontWeight: FontWeight.w500,
+                            backgroundColor: Colors.black54,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        MyText(
-          text: 'Your Uni Community Page',
-          size: 14,
-          paddingLeft: 15.0,
-          weight: FontWeight.w500,
-          color: kDarkGreyColor,
-          paddingTop: 30.0,
-          paddingBottom: 15.0,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          height: 21,
-          child: ListView(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            physics: const BouncingScrollPhysics(),
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 15),
-                height: 21,
-                child: Center(
-                  child: MyText(
-                    text: 'Sorted by ',
-                    size: 12,
-                    color: kGreyColor,
+          MyText(
+            text: 'Your Uni Community Page',
+            size: 14,
+            paddingLeft: 15.0,
+            weight: FontWeight.w500,
+            color: kDarkGreyColor,
+            paddingTop: 30.0,
+            paddingBottom: 15.0,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: 21,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 15),
+                  height: 21,
+                  child: Center(
+                    child: MyText(
+                      text: 'Sorted by ',
+                      size: 12,
+                      color: kGreyColor,
+                    ),
                   ),
                 ),
-              ),
-              ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: sorts.length,
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                itemBuilder: (context, index) => sortsWidget(
-                  '${sorts[index]}',
-                  index,
+                ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: sorts.length,
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemBuilder: (context, index) => sortsWidget(
+                    '${sorts[index]}',
+                    index,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: context.read<DataManager>().posts(context.read<Authentication>().user!),
-          builder: (_, snapshot) {
-            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Image.asset(
-                      'assets/images/clarity_sad-face-line.png',
-                      height: 35,
-                    ),
-                    Center(
-                      child: MyText(
-                        paddingTop: 15.0,
-                        text: 'There are no post to see',
-                        size: 12,
-                        color: kGreyColor3,
-                      ),
-                    ),
-                  ],
-                );
-              case ConnectionState.waiting:
-                return const Text('Loading...');
-              case ConnectionState.active:
-                if (snapshot.data!.size > 0) {
+          const SizedBox(
+            height: 30,
+          ),
+          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: context.read<DataManager>().posts(context.read<Authentication>().user!),
+            builder: (_, snapshot) {
+              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
                   return Column(
-                    children: snapshot.data!.docs
-                        .map(
-                          (e) => PostCard(
-                            post: Post.fromMap(e.data(), e.id),
-                          ),
-                        )
-                        .toList(),
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Image.asset(
+                        'assets/images/clarity_sad-face-line.png',
+                        height: 35,
+                      ),
+                      Center(
+                        child: MyText(
+                          paddingTop: 15.0,
+                          text: 'There are no post to see',
+                          size: 12,
+                          color: kGreyColor3,
+                        ),
+                      ),
+                    ],
                   );
-                  // return ListView.builder(
-                  //   itemCount: snapshot.data!.docs.length,
-                  //   physics: const BouncingScrollPhysics(),
-                  //   shrinkWrap: true,
-                  //   itemBuilder: (_, index) {
-                  //     return PostCard(
-                  //       post: Post.fromMap(snapshot.data!.docs[index].data(), snapshot.data!.docs[index].id),
-                  //     );
-                  //   },
-                  // );
-                } else {
-                  return Container();
-                }
+                case ConnectionState.waiting:
+                  return const Text('Loading...');
+                case ConnectionState.active:
+                  if (snapshot.data!.size > 0) {
+                    return Column(
+                      children: snapshot.data!.docs
+                          .map(
+                            (e) => PostCard(
+                              post: Post.fromMap(e.data(), e.id),
+                            ),
+                          )
+                          .toList(),
+                    );
+                    // return ListView.builder(
+                    //   itemCount: snapshot.data!.docs.length,
+                    //   physics: const BouncingScrollPhysics(),
+                    //   shrinkWrap: true,
+                    //   itemBuilder: (_, index) {
+                    //     return PostCard(
+                    //       post: Post.fromMap(snapshot.data!.docs[index].data(), snapshot.data!.docs[index].id),
+                    //     );
+                    //   },
+                    // );
+                  } else {
+                    return Container();
+                  }
 
-              default:
-                return Container();
-            }
-          },
-        ),
-      ],
+                default:
+                  return Container();
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -295,40 +301,83 @@ class _SocialState extends State<Social> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: SizedBox(
-            height: 200,
+            height: 250,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 8,
-                  child: TextFormField(
-                    cursorColor: kGreyColor,
-                    controller: _caption,
-                    maxLines: 10,
-                    style: const TextStyle(
-                      color: kGreyColor,
-                      fontSize: 12,
-                    ),
-                    scrollPhysics: const BouncingScrollPhysics(),
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                        left: 50,
-                        right: 15,
-                        top: 15,
-                        bottom: 15,
-                      ),
-                      hintText: 'What\'s on your mind?',
-                      hintStyle: TextStyle(
+                  child: Container(
+                    color: Colors.red,
+                    child: TextFormField(
+                      cursorColor: kGreyColor,
+                      controller: _caption,
+                      maxLines: 10,
+                      style: const TextStyle(
                         color: kGreyColor,
                         fontSize: 12,
                       ),
-                      suffixText: '0/500',
-                      suffixStyle: TextStyle(
-                        color: kGreyColor,
-                        fontSize: 12,
+                      scrollPhysics: const BouncingScrollPhysics(),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          left: 50,
+                          right: 15,
+                          top: 15,
+                          bottom: 15,
+                        ),
+                        hintText: 'What\'s on your mind?',
+                        hintStyle: TextStyle(
+                          color: kGreyColor,
+                          fontSize: 12,
+                        ),
+                        suffixText: '0/500',
+                        suffixStyle: TextStyle(
+                          color: kGreyColor,
+                          fontSize: 12,
+                        ),
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
                       ),
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
                     ),
+                  ),
+                ),
+                Visibility(
+                  visible: image != null,
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.file(
+                          image ?? File(""),
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              image = null;
+                            });
+                          },
+                          child: Container(
+                            height: 25,
+                            width: 25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(180),
+                              color: Colors.red,
+                            ),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Expanded(
