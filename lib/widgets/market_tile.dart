@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_light/core/authentication.dart';
@@ -11,7 +12,7 @@ import 'package:uni_light/widgets/profile_image.dart';
 class DiscountsTiles extends StatefulWidget {
   final String? pic, name, time, description;
   final String? uid;
-  final String? owner;
+  final DocumentReference<Map<String, dynamic>>? owner;
   final List? postImages, tags;
   final double? price;
   final String? status;
@@ -35,6 +36,22 @@ class DiscountsTiles extends StatefulWidget {
 }
 
 class _DiscountsTilesState extends State<DiscountsTiles> {
+  DocumentSnapshot<Map<String, dynamic>>? owner;
+  @override
+  void initState() {
+    super.initState();
+    getOwner();
+  }
+
+  getOwner() async {
+    var temp = await widget.owner!.get();
+    setState(() {
+      owner = temp;
+    });
+
+    print(owner!["light"]);
+  }
+
   @override
   Widget build(BuildContext context) {
     var user = context.read<Authentication>().user!;
@@ -160,6 +177,8 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
           ),
         )
         .toList();
+    // widget.owner?.get().then((value) => owne)
+
     return Container(
       margin: const EdgeInsets.only(
         bottom: 20,
@@ -172,8 +191,8 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfileImage(
-                image: '${widget.pic}',
-                status: widget.status!,
+                image: owner?["photo_url"] ?? '',
+                status: owner?["light"],
                 height: 55,
                 width: 55,
               ),
@@ -189,7 +208,7 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
                           children: [
                             MyText(
                               paddingLeft: 15.0,
-                              text: '${widget.name}',
+                              text: owner?["name"],
                               size: 16,
                               weight: FontWeight.w500,
                               color: kBlackColor,
@@ -207,7 +226,7 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Visibility(
-                              visible: user.uid == widget.owner,
+                              visible: owner?.id != null && user.uid == owner!.id,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -293,7 +312,7 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
                                   color: kRedColor,
                                 ),
                                 Visibility(
-                                  visible: widget.owner != user.uid,
+                                  visible: owner?.id != null && owner!.id != user.uid,
                                   child: Image.asset(
                                     'assets/images/send.png',
                                     height: 35,

@@ -388,22 +388,18 @@ class _ListingUploadState extends State<ListingUpload> {
                         onPressed: () {
                           if (_validateForm()) {
                             var user = context.read<Authentication>().user!;
-                            Products product = Products.fromMap({
-                              "owner": {
-                                "id": user.uid,
-                                "name": user.name,
-                                "photo_url": user.photoURL,
-                                "university": user.university,
-                                "light": user.light!,
+                            Products product = Products.fromMap(
+                              {
+                                "owner": FirebaseFirestore.instance.collection("users").doc(user.uid),
+                                "description": description.text,
+                                "price": double.parse(price.text.trim()),
+                                "currency": value,
+                                "photos": images,
+                                "is_sold": false,
+                                "tags": tags,
+                                "created_at": Timestamp.now(),
                               },
-                              "description": description.text,
-                              "price": double.parse(price.text.trim()),
-                              "currency": value,
-                              "photos": images,
-                              "is_sold": false,
-                              "tags": tags,
-                              "created_at": Timestamp.now(),
-                            });
+                            );
 
                             context.read<DataManager>().addProduct(product).then(
                               (_product) {

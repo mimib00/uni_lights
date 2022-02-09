@@ -38,10 +38,7 @@ class PostUploaded extends StatelessWidget {
           ),
           DiscountsTiles(
             uid: product.id,
-            owner: product.ownerId,
-            status: product.ownerLight ?? "Single",
-            pic: product.ownerPhoto,
-            name: product.ownerName,
+            owner: product.owner,
             time: product.createAt?.toDate().day.toString(),
             postImages: product.photos,
             description: product.description,

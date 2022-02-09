@@ -11,7 +11,7 @@ class ProfileImage extends StatelessWidget {
     required this.height,
     this.onTap,
   }) : super(key: key);
-  final String status;
+  final String? status;
   final String image;
   final double height, width;
   final Function()? onTap;

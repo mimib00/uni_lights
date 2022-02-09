@@ -69,10 +69,11 @@ class DataManager extends ChangeNotifier {
   Future<Products> addProduct(Products product) async {
     List<String> images = [];
     var data = product.toMap()["data"];
-    var user = data["owner"];
+    var user = data["owner"] as DocumentReference;
+    var owner = await user.get();
 
     for (var image in data["photos"]) {
-      var path = "/products/${user['id']}/${DateTime.now().microsecondsSinceEpoch}";
+      var path = "/products/${owner.id}/${DateTime.now().microsecondsSinceEpoch}";
       TaskSnapshot snapshot = await _storage.child(path).putFile(image);
       if (snapshot.state == TaskState.success) {
         var imageUrl = await snapshot.ref.getDownloadURL();

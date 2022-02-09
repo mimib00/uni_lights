@@ -5,17 +5,7 @@ class Products {
   String? id;
 
   /// Product owner id.
-  String? ownerId;
-
-  /// Product owner name.
-  String? ownerName;
-
-  /// Product owner photo url.
-  String? ownerPhoto;
-
-  /// Product owner university.
-  String? university;
-  String? ownerLight;
+  DocumentReference<Map<String, dynamic>>? owner;
 
   /// Product description.
   String? description;
@@ -40,10 +30,7 @@ class Products {
 
   Products({
     this.id,
-    required this.ownerId,
-    required this.ownerName,
-    required this.ownerPhoto,
-    required this.university,
+    required this.owner,
     required this.description,
     required this.price,
     required this.photos,
@@ -51,34 +38,27 @@ class Products {
     this.isSold = false,
     this.tags = const [],
     this.createAt,
-    this.ownerLight,
   });
 
-  factory Products.fromMap(Map<String, dynamic> data, {String? uid}) => Products(
+  test(Map<String, dynamic> owner) {
+    print(owner);
+  }
+
+  factory Products.fromMap(Map<String, dynamic> data, {String? uid, Map<String, dynamic>? owner}) => Products(
         id: uid,
         description: data["description"],
         price: data["price"],
         photos: data["photos"],
         currency: data["currency"],
-        ownerId: data["owner"]["id"],
-        ownerName: data["owner"]["name"],
-        ownerPhoto: data["owner"]["photo_url"],
-        university: data["owner"]["university"],
+        owner: data["owner"],
         isSold: data["is_sold"],
         tags: data["tags"],
         createAt: data["created_at"],
-        ownerLight: data["light"],
       );
   Map<String, dynamic> toMap() => {
         "id": id,
         "data": {
-          "owner": {
-            "id": ownerId,
-            "name": ownerName,
-            "photo_url": ownerPhoto,
-            "university": university,
-            "light": ownerLight
-          },
+          "owner": owner,
           "description": description,
           "price": price,
           "currency": currency,

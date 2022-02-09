@@ -179,10 +179,7 @@ class _UniMarketState extends State<UniMarket> {
                       var time = "${temp.year}-${temp.month}-${temp.day}, ${temp.hour}:${temp.minute}";
                       return DiscountsTiles(
                         uid: product.id,
-                        owner: product.ownerId,
-                        status: product.ownerLight ?? "Single",
-                        pic: product.ownerPhoto,
-                        name: product.ownerName,
+                        owner: product.owner,
                         time: time,
                         postImages: product.photos,
                         description: product.description,

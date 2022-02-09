@@ -18,17 +18,13 @@ class ViewProducts extends StatefulWidget {
 class _ViewProductsState extends State<ViewProducts> {
   Future<List<Products>> fetchMyProducts() async {
     var user = context.read<Authentication>().user!;
-    Map<String, dynamic> queryMap = {
-      "id": user.uid!,
-      "name": user.name!,
-      "photo_url": user.photoURL!,
-      "university": user.university,
-    };
 
-    return FirebaseFirestore.instance.collection("products").where("owner", isEqualTo: queryMap).get().then((snapshot) {
+    return FirebaseFirestore.instance.collection("products").where("owner", isEqualTo: FirebaseFirestore.instance.collection("users").doc(user.uid)).get().then((snapshot) async {
       List<Products> products = [];
       if (snapshot.docs.isEmpty) return [];
       for (var doc in snapshot.docs) {
+        var owner = await doc.data()["owner"].get();
+        // print(owner.id);
         products.add(Products.fromMap(doc.data()));
       }
       return products;
@@ -100,10 +96,8 @@ class _ViewProductsState extends State<ViewProducts> {
                           var temp = product.createAt!.toDate();
                           var time = "${temp.year}-${temp.month}-${temp.day}, ${temp.hour}:${temp.minute}";
                           return DiscountsTiles(
-                            status: product.ownerLight ?? "Single",
-                            pic: product.ownerPhoto,
-                            name: product.ownerName,
                             time: time,
+                            owner: product.owner,
                             postImages: product.photos,
                             description: product.description,
                             tags: product.tags,
