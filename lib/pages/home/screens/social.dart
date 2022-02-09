@@ -307,37 +307,34 @@ class _SocialState extends State<Social> {
               children: [
                 Expanded(
                   flex: 8,
-                  child: Container(
-                    color: Colors.red,
-                    child: TextFormField(
-                      cursorColor: kGreyColor,
-                      controller: _caption,
-                      maxLines: 10,
-                      style: const TextStyle(
+                  child: TextFormField(
+                    cursorColor: kGreyColor,
+                    controller: _caption,
+                    maxLines: 10,
+                    style: const TextStyle(
+                      color: kGreyColor,
+                      fontSize: 12,
+                    ),
+                    scrollPhysics: const BouncingScrollPhysics(),
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                        left: 50,
+                        right: 15,
+                        top: 15,
+                        bottom: 15,
+                      ),
+                      hintText: 'What\'s on your mind?',
+                      hintStyle: TextStyle(
                         color: kGreyColor,
                         fontSize: 12,
                       ),
-                      scrollPhysics: const BouncingScrollPhysics(),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(
-                          left: 50,
-                          right: 15,
-                          top: 15,
-                          bottom: 15,
-                        ),
-                        hintText: 'What\'s on your mind?',
-                        hintStyle: TextStyle(
-                          color: kGreyColor,
-                          fontSize: 12,
-                        ),
-                        suffixText: '0/500',
-                        suffixStyle: TextStyle(
-                          color: kGreyColor,
-                          fontSize: 12,
-                        ),
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
+                      suffixText: '0/500',
+                      suffixStyle: TextStyle(
+                        color: kGreyColor,
+                        fontSize: 12,
                       ),
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
                     ),
                   ),
                 ),

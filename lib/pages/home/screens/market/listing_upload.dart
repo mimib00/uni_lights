@@ -69,8 +69,11 @@ class _ListingUploadState extends State<ListingUpload> {
   void _getImage() async {
     final ImagePicker _picker = ImagePicker();
     var temp = await _picker.pickMultiImage();
+    if (temp == null) return;
     for (var i = 0; i < 2; i++) {
-      images.add(File(temp![i].path));
+      setState(() {
+        images.add(File(temp[i].path));
+      });
     }
   }
 
@@ -192,34 +195,77 @@ class _ListingUploadState extends State<ListingUpload> {
                     color: kDarkGreyColor,
                     paddingBottom: 10.0,
                   ),
-                  GestureDetector(
-                    onTap: _getImage,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/Rectangle 173.png',
-                          height: 100,
-                          width: kWidth(context),
-                          fit: BoxFit.fill,
+                  images.isEmpty
+                      ? GestureDetector(
+                          onTap: _getImage,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/Rectangle 173.png',
+                                height: 100,
+                                width: kWidth(context),
+                                fit: BoxFit.fill,
+                              ),
+                              Column(
+                                children: [
+                                  Image.asset(
+                                    'assets/images/entypo_upload.png',
+                                    height: 50,
+                                  ),
+                                  MyText(
+                                    paddingTop: 10.0,
+                                    text: 'Browse files',
+                                    size: 11,
+                                    color: kRedColor,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      : Row(
+                          children: images
+                              .map<Widget>(
+                                (image) => Stack(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.file(
+                                        image,
+                                        height: 80,
+                                        width: 80,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            images.removeWhere((element) => element == image);
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 25,
+                                          width: 25,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(180),
+                                            color: Colors.red,
+                                          ),
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                              .toList(),
                         ),
-                        Column(
-                          children: [
-                            Image.asset(
-                              'assets/images/entypo_upload.png',
-                              height: 50,
-                            ),
-                            MyText(
-                              paddingTop: 10.0,
-                              text: 'Browse files',
-                              size: 11,
-                              color: kRedColor,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
                   MyText(
                     paddingTop: 5.0,
                     text: 'Accepted File Types: JPG, PNG',

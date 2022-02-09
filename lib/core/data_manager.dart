@@ -110,7 +110,7 @@ class DataManager extends ChangeNotifier {
 
   _restLimits(SharedPreferences prefs) async {
     await prefs.setInt("date", DateTime.now().day);
-    await prefs.setInt("swipes", 0);
+    await prefs.setInt("swipes", 10);
   }
 
   Future<String?> swipe() async {
@@ -128,11 +128,11 @@ class DataManager extends ChangeNotifier {
     SharedPreferences.getInstance().then((prefs) {
       var user = context.read<Authentication>().user;
       var date = prefs.getInt("date");
+      print("SWIPES: ${prefs.getInt("swipes")}");
 
       // check if they don't exist
       if (date == null) {
-        prefs.setInt("date", DateTime.now().day);
-        prefs.setInt("swipes", 10);
+        _restLimits(prefs);
       }
 
       if (user == null) return;
