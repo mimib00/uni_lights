@@ -23,8 +23,6 @@ class _ViewProductsState extends State<ViewProducts> {
       List<Products> products = [];
       if (snapshot.docs.isEmpty) return [];
       for (var doc in snapshot.docs) {
-        var owner = await doc.data()["owner"].get();
-        // print(owner.id);
         products.add(Products.fromMap(doc.data()));
       }
       return products;

@@ -47,7 +47,7 @@ class _UpgradeAccountState extends State<UpgradeAccount> {
           Expanded(
             flex: 3,
             child: Image.asset(
-              'assets/images/verify pic.png',
+              'assets/images/verify pic.jpeg',
               fit: BoxFit.cover,
               width: kWidth(context),
             ),

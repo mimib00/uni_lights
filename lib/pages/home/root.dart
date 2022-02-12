@@ -242,6 +242,7 @@ class AddBio extends StatelessWidget {
                 validator: (value) {
                   if (value!.isEmpty) return "You must enter a Bio.";
                   if (value.length < 10) return "Bio must be 50 charachters long.";
+                  return null;
                 },
                 controller: _bio,
                 cursorColor: kRedColor,
@@ -256,6 +257,7 @@ class AddBio extends StatelessWidget {
                 validator: (value) {
                   if (value!.isEmpty) return "You must enter a Quote.";
                   if (value.length < 10) return "Quote must be 10 charachters long.";
+                  return null;
                 },
                 controller: _quote,
                 cursorColor: kRedColor,

@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_light/core/authentication.dart';
 import 'package:uni_light/core/data_manager.dart';
+import 'package:uni_light/models/user.dart';
+import 'package:uni_light/pages/home/screens/inbox/chat_screen.dart';
 import 'package:uni_light/pages/home/screens/profile/profile_screen.dart';
 import 'package:uni_light/utils/constants.dart';
+import 'package:uni_light/utils/helper.dart';
 import 'package:uni_light/widgets/my_text.dart';
 import 'package:uni_light/widgets/profile_image.dart';
 
@@ -37,6 +40,7 @@ class DiscountsTiles extends StatefulWidget {
 
 class _DiscountsTilesState extends State<DiscountsTiles> {
   DocumentSnapshot<Map<String, dynamic>>? owner;
+  final CollectionReference<Map<String, dynamic>> _chatroom = FirebaseFirestore.instance.collection('chatroom');
   @override
   void initState() {
     super.initState();
@@ -48,8 +52,52 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
     setState(() {
       owner = temp;
     });
+  }
 
-    print(owner!["light"]);
+  createChatRoom(Users user) async {
+    String id = getId(user.uid!, owner!.id);
+    // check if chatrrom exists
+    bool exists = await _chatroom.doc(id).get().then((doc) => doc.exists);
+    if (exists) {
+      // Open the chat screen and get messages stream.
+      return;
+    }
+
+    var ownerData = owner!.data()!;
+
+    // create on if it doesn't exists.
+    Map<String, dynamic> data = {
+      "users": [
+        {
+          "id": user.uid!,
+          "name": user.name!,
+          "photo_url": user.photoURL!,
+          "light": user.light,
+        },
+        {
+          "id": owner!.id,
+          "name": ownerData["name"],
+          "photo_url": ownerData["photo_url"],
+          "light": ownerData["light"],
+        }
+      ],
+      "last_message": {
+        "message": "",
+        "time": Timestamp.now(),
+      }
+    };
+
+    _chatroom.doc(id).set(data).then((value) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ChatScreen(
+            id: id,
+            name: ownerData["name"],
+            photo: ownerData["photo_url"],
+          ),
+        ),
+      );
+    });
   }
 
   @override
@@ -313,9 +361,15 @@ class _DiscountsTilesState extends State<DiscountsTiles> {
                                 ),
                                 Visibility(
                                   visible: owner?.id != null && owner!.id != user.uid,
-                                  child: Image.asset(
-                                    'assets/images/send.png',
-                                    height: 35,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      createChatRoom(user);
+                                    },
+                                    behavior: HitTestBehavior.opaque,
+                                    child: Image.asset(
+                                      'assets/images/send.png',
+                                      height: 35,
+                                    ),
                                   ),
                                 )
                               ],

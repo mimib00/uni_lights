@@ -91,7 +91,7 @@ class _ListingUploadState extends State<ListingUpload> {
           physics: const BouncingScrollPhysics(),
           children: [
             Image.asset(
-              'assets/images/upload.png',
+              'assets/images/upload.jpeg',
               fit: BoxFit.cover,
               width: kWidth(context),
               height: 235,

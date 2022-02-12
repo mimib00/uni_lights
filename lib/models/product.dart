@@ -40,10 +40,6 @@ class Products {
     this.createAt,
   });
 
-  test(Map<String, dynamic> owner) {
-    print(owner);
-  }
-
   factory Products.fromMap(Map<String, dynamic> data, {String? uid, Map<String, dynamic>? owner}) => Products(
         id: uid,
         description: data["description"],

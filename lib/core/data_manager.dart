@@ -121,6 +121,7 @@ class DataManager extends ChangeNotifier {
         return "limit";
       }
       notifyListeners();
+      return null;
     });
   }
 
@@ -128,7 +129,6 @@ class DataManager extends ChangeNotifier {
     SharedPreferences.getInstance().then((prefs) {
       var user = context.read<Authentication>().user;
       var date = prefs.getInt("date");
-      print("SWIPES: ${prefs.getInt("swipes")}");
 
       // check if they don't exist
       if (date == null) {
